@@ -1,0 +1,1174 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Aurelia — Luxury Salon & Beauty Experience" />
+  <title>AURELIA — Luxury Salon</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gold: {
+              100: '#F9E9B8',
+              200: '#E8CA87',
+              300: '#D4AF65',
+              400: '#B9944D',
+              500: '#927239'
+            },
+            charcoal: '#0D0D0D'
+          },
+          fontFamily: {
+            serif: ['Playfair Display', 'serif'],
+            sans: ['DM Sans', 'sans-serif']
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    :root {
+      --gold: #d4af65;
+      --gold-light: #f1dba6;
+      --dark: #0b0b0b;
+      --muted: #a5a19a;
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--dark);
+      color: #f4f0e8;
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--gold);
+      color: #080808;
+    }
+
+    .serif {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .gold-text {
+      background: linear-gradient(110deg, #a17a3e, #f5dda5, #c39b55);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .glass {
+      background: rgba(20, 20, 20, 0.48);
+      border: 1px solid rgba(212, 175, 101, 0.16);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .gold-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      background:
+        linear-gradient(90deg, rgba(8,8,8,.9) 0%, rgba(8,8,8,.45) 50%, rgba(8,8,8,.7) 100%),
+        linear-gradient(180deg, rgba(8,8,8,.15), #0b0b0b 98%),
+        url('https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=2400&q=90') center/cover;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 70% 35%, rgba(212,175,101,.12), transparent 38%);
+      pointer-events: none;
+    }
+
+    .hero-title {
+      font-size: clamp(3.5rem, 9vw, 9.5rem);
+      line-height: .92;
+      letter-spacing: -.06em;
+    }
+
+    .section-title {
+      font-size: clamp(2.8rem, 5.5vw, 5.5rem);
+      line-height: 1;
+      letter-spacing: -.045em;
+    }
+
+    .eyebrow {
+      font-size: 10px;
+      letter-spacing: .3em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+    }
+
+    .service-card {
+      position: relative;
+      overflow: hidden;
+      min-height: 400px;
+      transition: transform .5s cubic-bezier(.2,.8,.2,1), border-color .5s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(212,175,101,.55);
+    }
+
+    .service-card img {
+      transition: transform .9s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .service-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .service-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 25%, rgba(5,5,5,.15) 40%, rgba(5,5,5,.95) 100%);
+    }
+
+    .gold-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: var(--gold);
+      color: #101010;
+      padding: 16px 25px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      transition: background .3s, transform .3s;
+    }
+
+    .gold-btn:hover {
+      background: var(--gold-light);
+      transform: translateY(-2px);
+    }
+
+    .outline-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid rgba(212,175,101,.5);
+      padding: 16px 25px;
+      color: var(--gold-light);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      transition: all .3s;
+    }
+
+    .outline-btn:hover {
+      background: rgba(212,175,101,.1);
+      border-color: var(--gold);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .9s ease, transform .9s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .delay-1 { transition-delay: .1s; }
+    .delay-2 { transition-delay: .2s; }
+    .delay-3 { transition-delay: .3s; }
+
+    .menu-line {
+      display: block;
+      height: 1px;
+      width: 26px;
+      background: var(--gold-light);
+      transition: transform .3s;
+    }
+
+    .mobile-menu {
+      display: none;
+    }
+
+    .mobile-menu.open {
+      display: flex;
+    }
+
+    .number {
+      color: rgba(212,175,101,.6);
+      font-family: 'Playfair Display', serif;
+      font-size: 14px;
+    }
+
+    .image-frame {
+      position: relative;
+    }
+
+    .image-frame::after {
+      content: "";
+      position: absolute;
+      inset: 14px -14px -14px 14px;
+      border: 1px solid rgba(212,175,101,.4);
+      z-index: -1;
+    }
+
+    .marquee {
+      border-top: 1px solid rgba(212,175,101,.2);
+      border-bottom: 1px solid rgba(212,175,101,.2);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-flex;
+      align-items: center;
+      animation: scroll 28s linear infinite;
+    }
+
+    @keyframes scroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        background-position: 63% center;
+      }
+
+      .hero-title {
+        font-size: clamp(3.2rem, 15vw, 6rem);
+      }
+
+      .service-card {
+        min-height: 360px;
+      }
+
+      .image-frame::after {
+        inset: 10px -8px -8px 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION -->
+  <header class="absolute top-0 left-0 w-full z-50">
+    <nav class="max-w-[1600px] mx-auto px-6 md:px-12 py-7 flex items-center justify-between">
+
+      <a href="#" class="serif text-2xl md:text-3xl tracking-[.18em] text-white">
+        AURELIA<span class="text-gold-300">.</span>
+      </a>
+
+      <div class="hidden md:flex items-center gap-10">
+        <a href="#home" class="text-[10px] uppercase tracking-[.22em] text-white/70 hover:text-gold-200 transition">Home</a>
+        <a href="#services" class="text-[10px] uppercase tracking-[.22em] text-white/70 hover:text-gold-200 transition">Services</a>
+        <a href="#story" class="text-[10px] uppercase tracking-[.22em] text-white/70 hover:text-gold-200 transition">Our Story</a>
+        <a href="#contact" class="text-[10px] uppercase tracking-[.22em] text-white/70 hover:text-gold-200 transition">Contact</a>
+      </div>
+
+      <a href="#booking" class="hidden md:inline-flex outline-btn !py-3 !px-5">
+        Book Appointment <span>↗</span>
+      </a>
+
+      <button id="menuToggle" class="md:hidden flex flex-col gap-2 p-2" aria-label="Open menu" aria-expanded="false">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+    </nav>
+
+    <div id="mobileMenu" class="mobile-menu flex-col glass mx-4 px-6 py-8 gap-6 rounded-sm">
+      <a href="#home" class="text-xs uppercase tracking-[.2em] text-white/80">Home</a>
+      <a href="#services" class="text-xs uppercase tracking-[.2em] text-white/80">Services</a>
+      <a href="#story" class="text-xs uppercase tracking-[.2em] text-white/80">Our Story</a>
+      <a href="#contact" class="text-xs uppercase tracking-[.2em] text-white/80">Contact</a>
+      <a href="#booking" class="gold-btn mt-2">Book Appointment ↗</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <main>
+    <section id="home" class="hero flex items-center">
+      <div class="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 w-full pt-28 pb-24">
+
+        <div class="max-w-5xl">
+          <div class="flex items-center gap-4 mb-8 reveal">
+            <span class="w-10 h-px bg-gold-300"></span>
+            <span class="eyebrow">The Art of Refined Beauty</span>
+          </div>
+
+          <h1 class="hero-title serif font-normal reveal delay-1">
+            Beauty,<br />
+            <span class="italic gold-text">Elevated.</span>
+          </h1>
+
+          <p class="max-w-sm mt-8 md:mt-10 text-sm md:text-base leading-7 text-white/60 font-light reveal delay-2">
+            A sanctuary where timeless elegance meets contemporary artistry. Discover a beauty experience curated entirely for you.
+          </p>
+
+          <div class="flex flex-wrap gap-4 mt-9 reveal delay-3">
+            <a href="#booking" class="gold-btn">
+              Discover Your Glow <span class="text-base">↗</span>
+            </a>
+            <a href="#services" class="outline-btn">
+              Explore Services <span>↓</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hidden md:flex absolute right-12 bottom-20 flex-col items-center gap-4">
+          <span class="eyebrow [writing-mode:vertical-rl]">Scroll to explore</span>
+          <span class="h-16 w-px bg-gradient-to-b from-gold-300 to-transparent"></span>
+        </div>
+
+        <div class="mt-24 md:mt-32 flex flex-wrap items-center gap-8 md:gap-16 reveal">
+          <div>
+            <p class="serif text-3xl text-gold-200">12<span class="text-lg">+</span></p>
+            <p class="text-[9px] uppercase tracking-[.2em] text-white/50 mt-1">Years of Craft</p>
+          </div>
+          <div class="w-px h-10 bg-white/20"></div>
+          <div>
+            <p class="serif text-3xl text-gold-200">5K<span class="text-lg">+</span></p>
+            <p class="text-[9px] uppercase tracking-[.2em] text-white/50 mt-1">Happy Clients</p>
+          </div>
+          <div class="w-px h-10 bg-white/20"></div>
+          <div>
+            <p class="serif text-3xl text-gold-200">4.9<span class="text-lg">★</span></p>
+            <p class="text-[9px] uppercase tracking-[.2em] text-white/50 mt-1">Client Rating</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MARQUEE -->
+    <div class="marquee py-5">
+      <div class="marquee-track">
+        <span class="serif italic text-2xl md:text-4xl text-white/70 mx-8">Refined Beauty</span>
+        <span class="text-gold-300 mx-4">✦</span>
+        <span class="serif italic text-2xl md:text-4xl text-white/70 mx-8">Timeless Elegance</span>
+        <span class="text-gold-300 mx-4">✦</span>
+        <span class="serif italic text-2xl md:text-4xl text-white/70 mx-8">Personalized Luxury</span>
+        <span class="text-gold-300 mx-4">✦</span>
+        <span class="serif italic text-2xl md:text-4xl text-white/70 mx-8">Refined Beauty</span>
+        <span class="text-gold-300 mx-4">✦</span>
+        <span class="serif italic text-2xl md:text-4xl text-white/70 mx-8">Timeless Elegance</span>
+        <span class="text-gold-300 mx-4">✦</span>
+        <span class="serif italic text-2xl md:text-4xl text-white/70 mx-8">Personalized Luxury</span>
+        <span class="text-gold-300 mx-4">✦</span>
+      </div>
+    </div>
+
+    <!-- SERVICES -->
+    <section id="services" class="py-24 md:py-36">
+      <div class="max-w-[1600px] mx-auto px-6 md:px-12">
+
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-8 mb-14 md:mb-20">
+          <div>
+            <p class="eyebrow mb-6 reveal">Our Signature Services</p>
+            <h2 class="section-title serif font-normal reveal delay-1">
+              The art of<br />
+              <span class="italic gold-text">self-care.</span>
+            </h2>
+          </div>
+
+          <p class="text-sm text-white/50 leading-7 max-w-xs reveal delay-2">
+            Every detail is thoughtfully designed to create an exceptional experience, from the first touch to the final reveal.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+          <!-- SERVICE 1 -->
+          <article class="service-card glass reveal">
+            <img
+              src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=85"
+              alt="Luxury hair styling"
+              class="absolute inset-0 w-full h-full object-cover opacity-80"
+              loading="lazy"
+            />
+            <div class="service-overlay"></div>
+
+            <div class="relative z-10 h-full flex flex-col justify-between p-7 md:p-9">
+              <div class="flex justify-between items-start">
+                <span class="number">01</span>
+                <span class="border border-white/20 rounded-full w-10 h-10 flex items-center justify-center text-gold-200">↗</span>
+              </div>
+
+              <div>
+                <p class="eyebrow mb-3">Hair Artistry</p>
+                <h3 class="serif text-3xl md:text-4xl font-normal">Signature<br />Hair</h3>
+                <p class="text-xs text-white/60 mt-4 leading-6 max-w-xs">
+                  Expert cuts, precision styling and transformative color crafted around your individuality.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- SERVICE 2 -->
+          <article class="service-card glass reveal delay-1">
+            <img
+              src="https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?auto=format&fit=crop&w=1000&q=85"
+              alt="Luxury facial and skincare"
+              class="absolute inset-0 w-full h-full object-cover opacity-80"
+              loading="lazy"
+            />
+            <div class="service-overlay"></div>
+
+            <div class="relative z-10 h-full flex flex-col justify-between p-7 md:p-9">
+              <div class="flex justify-between items-start">
+                <span class="number">02</span>
+                <span class="border border-white/20 rounded-full w-10 h-10 flex items-center justify-center text-gold-200">↗</span>
+              </div>
+
+              <div>
+                <p class="eyebrow mb-3">Skin Rituals</p>
+                <h3 class="serif text-3xl md:text-4xl font-normal">Luminous<br />Skin</h3>
+                <p class="text-xs text-white/60 mt-4 leading-6 max-w-xs">
+                  Bespoke facial rituals and advanced skincare designed to reveal your natural radiance.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <!-- SERVICE 3 -->
+          <article class="service-card glass reveal delay-2">
+            <img
+              src="https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=1000&q=85"
+              alt="Luxury manicure and nail artistry"
+              class="absolute inset-0 w-full h-full object-cover opacity-80"
+              loading="lazy"
+            />
+            <div class="service-overlay"></div>
+
+            <div class="relative z-10 h-full flex flex-col justify-between p-7 md:p-9">
+              <div class="flex justify-between items-start">
+                <span class="number">03</span>
+                <span class="border border-white/20 rounded-full w-10 h-10 flex items-center justify-center text-gold-200">↗</span>
+              </div>
+
+              <div>
+                <p class="eyebrow mb-3">Nail Artistry</p>
+                <h3 class="serif text-3xl md:text-4xl font-normal">Perfect<br />Details</h3>
+                <p class="text-xs text-white/60 mt-4 leading-6 max-w-xs">
+                  Impeccable manicures, luxurious treatments and modern nail artistry with refined finishes.
+                </p>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <div class="flex justify-center mt-12 reveal">
+          <a href="#booking" class="outline-btn">
+            View All Treatments <span>↗</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- OUR STORY -->
+    <section id="story" class="py-24 md:py-36 bg-[#10100f] overflow-hidden">
+      <div class="max-w-[1600px] mx-auto px-6 md:px-12">
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-28 items-center">
+
+          <div class="image-frame max-w-lg mx-auto lg:mx-0 w-full reveal">
+            <img
+              src="https://images.unsplash.com/photo-1562322140-8baeececf3df?auto=format&fit=crop&w=1200&q=90"
+              alt="Salon stylist working with a client"
+              class="w-full aspect-[4/5] object-cover"
+              loading="lazy"
+            />
+            <div class="absolute bottom-6 left-6 glass px-5 py-4">
+              <p class="serif italic text-lg text-gold-200">Beauty is an art.</p>
+              <p class="text-[9px] uppercase tracking-[.2em] text-white/50 mt-1">Aurelia Philosophy</p>
+            </div>
+          </div>
+
+          <div>
+            <p class="eyebrow mb-6 reveal">Our Philosophy</p>
+
+            <h2 class="section-title serif font-normal reveal delay-1">
+              Where luxury<br />
+              <span class="italic gold-text">feels personal.</span>
+            </h2>
+
+            <p class="text-sm text-white/55 leading-8 mt-8 max-w-md reveal delay-2">
+              At Aurelia, we believe true luxury is not about excess. It is about intention, precision and the feeling of being understood.
+            </p>
+
+            <p class="text-sm text-white/55 leading-8 mt-5 max-w-md reveal delay-2">
+              Our team blends timeless techniques with contemporary artistry to create a signature experience that is uniquely yours.
+            </p>
+
+            <a href="#booking" class="outline-btn mt-9 reveal delay-3">
+              Experience Aurelia <span>↗</span>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="py-24 md:py-32">
+      <div class="max-w-[1600px] mx-auto px-6 md:px-12">
+
+        <div class="text-center max-w-3xl mx-auto">
+          <p class="eyebrow mb-6 reveal">A Complete Experience</p>
+          <h2 class="section-title serif font-normal reveal delay-1">
+            Your time.<br />
+            <span class="italic gold-text">Your ritual.</span>
+          </h2>
+          <p class="text-sm text-white/50 leading-7 mt-7 max-w-md mx-auto reveal delay-2">
+            From the moment you arrive, every element is curated to help you slow down, unwind and leave feeling renewed.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 md:mt-24">
+
+          <div class="text-center md:border-r border-white/10 px-5 reveal">
+            <span class="serif text-4xl italic text-gold-200">01</span>
+            <h3 class="serif text-2xl mt-5">Personal Consultation</h3>
+            <p class="text-xs text-white/50 leading-6 mt-4 max-w-xs mx-auto">
+              A thoughtful consultation to understand your vision and personalize your experience.
+            </p>
+          </div>
+
+          <div class="text-center md:border-r border-white/10 px-5 reveal delay-1">
+            <span class="serif text-4xl italic text-gold-200">02</span>
+            <h3 class="serif text-2xl mt-5">Expert Craftsmanship</h3>
+            <p class="text-xs text-white/50 leading-6 mt-4 max-w-xs mx-auto">
+              Precision, care and artistry delivered by experienced beauty professionals.
+            </p>
+          </div>
+
+          <div class="text-center px-5 reveal delay-2">
+            <span class="serif text-4xl italic text-gold-200">03</span>
+            <h3 class="serif text-2xl mt-5">Your Signature Finish</h3>
+            <p class="text-xs text-white/50 leading-6 mt-4 max-w-xs mx-auto">
+              A final touch that reflects your personal style and leaves you feeling radiant.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOKING CTA -->
+    <section id="booking" class="relative py-28 md:py-40 overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-b from-[#0b0b0b] via-[#17130d] to-[#0b0b0b]"></div>
+      <div class="absolute top-0 left-0 right-0 gold-line"></div>
+
+      <div class="relative max-w-4xl mx-auto px-6 text-center">
+
+        <p class="eyebrow mb-7 reveal">Your Next Chapter of Beauty</p>
+
+        <h2 class="section-title serif font-normal reveal delay-1">
+          Make time for<br />
+          <span class="italic gold-text">something beautiful.</span>
+        </h2>
+
+        <p class="text-sm text-white/55 leading-7 max-w-md mx-auto mt-8 reveal delay-2">
+          Reserve your private beauty experience and discover the Aurelia difference.
+        </p>
+
+        <a href="#contact" class="gold-btn mt-9 reveal delay-3">
+          Reserve Your Visit <span>↗</span>
+        </a>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="contact" class="border-t border-white/10 pt-16 md:pt-24 pb-8">
+    <div class="max-w-[1600px] mx-auto px-6 md:px-12">
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 pb-16">
+
+        <div class="lg:col-span-2">
+          <a href="#" class="serif text-3xl tracking-[.18em]">
+            AURELIA<span class="text-gold-300">.</span>
+          </a>
+
+          <p class="text-sm text-white/45 leading-7 max-w-sm mt-6">
+            A luxury beauty destination where artistry, individuality and timeless elegance come together.
+          </p>
+
+          <div class="flex gap-3 mt-7">
+            <a href="#" aria-label="Instagram" class="w-10 h-10 border border-white/15 rounded-full flex items-center justify-center text-xs text-gold-200 hover:border-gold-300 transition">ig</a>
+            <a href="#" aria-label="Facebook" class="w-10 h-10 border border-white/15 rounded-full flex items-center justify-center text-xs text-gold-200 hover:border-gold-300 transition">fb</a>
+            <a href="#" aria-label="Pinterest" class="w-10 h-10 border border-white/15 rounded-full flex items-center justify-center text-xs text-gold-200 hover:border-gold-300 transition">p</a>
+          </div>
+        </div>
+
+        <div>
+          <p class="eyebrow mb-6">Explore</p>
+          <div class="flex flex-col gap-4">
+            <a href="#home" class="text-sm text-white/50 hover:text-gold-200 transition">Home</a>
+            <a href="#services" class="text-sm text-white/50 hover:text-gold-200 transition">Services</a>
+            <a href="#story" class="text-sm text-white/50 hover:text-gold-200 transition">Our Story</a>
+            <a href="#booking" class="text-sm text-white/50 hover:text-gold-200 transition">Appointments</a>
+          </div>
+        </div>
+
+        <div>
+          <p class="eyebrow mb-6">Visit Us</p>
+          <div class="flex flex-col gap-4 text-sm text-white/50 leading-6">
+            <p>24 Aurelia Lane,<br />The Luxury District</p>
+            <p>Mon – Sat: 10:00 AM – 8:00 PM</p>
+            <a href="mailto:hello@aureliasalon.com" class="hover:text-gold-200 transition">hello@aureliasalon.com</a>
+            <a href="tel:+911234567890" class="hover:text-gold-200 transition">+91 12345 67890</a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="gold-line opacity-30"></div>
+
+      <div class="flex flex-col md:flex-row justify-between items-center gap-5 pt-7">
+        <p class="text-[10px] tracking-[.12em] text-white/30">
+          © <span id="year"></span> AURELIA SALON. ALL RIGHTS RESERVED.
+        </p>
+
+        <div class="flex gap-6">
+          <a href="#" class="text-[10px] tracking-[.12em] text-white/30 hover:text-gold-200 transition">Privacy Policy</a>
+          <a href="#" class="text-[10px] tracking-[.12em] text-white/30 hover:text-gold-200 transition">Terms</a>
+        </div>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- INTERACTIONS -->
+  <script>
+    // Dynamic year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    });
+
+    document.querySelectorAll('#mobileMenu a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    // Scroll reveal animation
+    const revealElements = document.querySelectorAll('.reveal');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.12
+    });
+
+    revealElements.forEach(element => revealObserver.observe(element));
+  </script>
+<!-- ============================================
+     CDN LIBRARIES — PLACE BEFORE CUSTOM JS
+============================================ -->
+
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<!-- GSAP Core -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13/dist/gsap.min.js"></script>
+
+<!-- GSAP ScrollTrigger -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13/dist/ScrollTrigger.min.js"></script>
+
+
+<!-- ============================================
+     AURELIA — 3D PARTICLES + PREMIUM ANIMATIONS
+============================================ -->
+
+<script>
+(() => {
+  "use strict";
+
+  /* ---------------------------------------------
+     1. THREE.JS — LUXURY 3D PARTICLE BACKGROUND
+  --------------------------------------------- */
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  const scene = new THREE.Scene();
+
+  const camera = new THREE.PerspectiveCamera(
+    60,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+
+  camera.position.z = 7;
+
+  const renderer = new THREE.WebGLRenderer({
+    alpha: true,
+    antialias: true,
+    powerPreference: "high-performance"
+  });
+
+  renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio, 1.5)
+  );
+
+  renderer.setSize(
+    window.innerWidth,
+    window.innerHeight
+  );
+
+  renderer.setClearColor(0x000000, 0);
+
+  const canvas = renderer.domElement;
+
+  canvas.id = "aurelia-webgl";
+  canvas.setAttribute("aria-hidden", "true");
+
+  Object.assign(canvas.style, {
+    position: "fixed",
+    inset: "0",
+    width: "100%",
+    height: "100%",
+    zIndex: "-1",
+    pointerEvents: "none"
+  });
+
+  document.body.prepend(canvas);
+
+  /* ---------------------------------------------
+     PARTICLE CONFIGURATION
+  --------------------------------------------- */
+
+  const isMobile = window.innerWidth < 768;
+
+  const PARTICLE_COUNT = isMobile ? 1000 : 2400;
+
+  const positions = new Float32Array(
+    PARTICLE_COUNT * 3
+  );
+
+  const originalPositions = new Float32Array(
+    PARTICLE_COUNT * 3
+  );
+
+  const particleGeometry = new THREE.BufferGeometry();
+
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+
+    const i3 = i * 3;
+
+    const radius = 5.5 + Math.random() * 4.5;
+
+    const theta = Math.random() * Math.PI * 2;
+
+    const phi = Math.acos(
+      2 * Math.random() - 1
+    );
+
+    const x =
+      radius *
+      Math.sin(phi) *
+      Math.cos(theta);
+
+    const y =
+      radius *
+      Math.sin(phi) *
+      Math.sin(theta);
+
+    const z =
+      radius * Math.cos(phi);
+
+    positions[i3] = x;
+    positions[i3 + 1] = y;
+    positions[i3 + 2] = z;
+
+    originalPositions[i3] = x;
+    originalPositions[i3 + 1] = y;
+    originalPositions[i3 + 2] = z;
+  }
+
+  particleGeometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(positions, 3)
+  );
+
+  /* ---------------------------------------------
+     GOLD PARTICLE MATERIAL
+  --------------------------------------------- */
+
+  const particleMaterial = new THREE.PointsMaterial({
+    color: 0xd4af65,
+    size: isMobile ? 0.018 : 0.025,
+    transparent: true,
+    opacity: 0.42,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false,
+    sizeAttenuation: true
+  });
+
+  const particles = new THREE.Points(
+    particleGeometry,
+    particleMaterial
+  );
+
+  scene.add(particles);
+
+  /* ---------------------------------------------
+     MOUSE INTERACTION
+  --------------------------------------------- */
+
+  const mouse = {
+    x: 0,
+    y: 0
+  };
+
+  const targetMouse = {
+    x: 0,
+    y: 0
+  };
+
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+
+      targetMouse.x =
+        (event.clientX / window.innerWidth) * 2 - 1;
+
+      targetMouse.y =
+        -(event.clientY / window.innerHeight) * 2 + 1;
+
+    },
+    { passive: true }
+  );
+
+  /* ---------------------------------------------
+     ANIMATION LOOP
+  --------------------------------------------- */
+
+  const clock = new THREE.Clock();
+
+  function animateParticles() {
+
+    requestAnimationFrame(animateParticles);
+
+    const elapsed = clock.getElapsedTime();
+
+    if (!prefersReducedMotion) {
+
+      mouse.x +=
+        (targetMouse.x - mouse.x) * 0.025;
+
+      mouse.y +=
+        (targetMouse.y - mouse.y) * 0.025;
+
+      particles.rotation.y =
+        elapsed * 0.012 + mouse.x * 0.045;
+
+      particles.rotation.x =
+        Math.sin(elapsed * 0.08) * 0.025 +
+        mouse.y * 0.035;
+
+      const positionAttribute =
+        particleGeometry.attributes.position;
+
+      for (let i = 0; i < PARTICLE_COUNT; i++) {
+
+        const i3 = i * 3;
+
+        const baseX = originalPositions[i3];
+        const baseY = originalPositions[i3 + 1];
+        const baseZ = originalPositions[i3 + 2];
+
+        positionAttribute.array[i3] =
+          baseX +
+          Math.sin(elapsed * 0.15 + baseY) * 0.012;
+
+        positionAttribute.array[i3 + 1] =
+          baseY +
+          Math.cos(elapsed * 0.12 + baseX) * 0.012;
+
+        positionAttribute.array[i3 + 2] =
+          baseZ +
+          Math.sin(elapsed * 0.1 + baseX) * 0.008;
+      }
+
+      positionAttribute.needsUpdate = true;
+    }
+
+    renderer.render(scene, camera);
+  }
+
+  animateParticles();
+
+  /* ---------------------------------------------
+     RESPONSIVE RESIZE
+  --------------------------------------------- */
+
+  function handleResize() {
+
+    camera.aspect =
+      window.innerWidth / window.innerHeight;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+      window.innerWidth,
+      window.innerHeight
+    );
+
+    renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio, 1.5)
+    );
+  }
+
+  window.addEventListener(
+    "resize",
+    handleResize,
+    { passive: true }
+  );
+
+
+  /* =============================================
+     2. GSAP + SCROLLTRIGGER
+  ============================================= */
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  if (prefersReducedMotion) {
+
+    gsap.set(
+      ".reveal",
+      {
+        clearProps: "all",
+        opacity: 1,
+        y: 0
+      }
+    );
+
+    return;
+  }
+
+  /* ---------------------------------------------
+     GLOBAL GSAP SETTINGS
+  --------------------------------------------- */
+
+  gsap.defaults({
+    ease: "power3.out"
+  });
+
+  /* ---------------------------------------------
+     HERO INTRO ANIMATION
+  --------------------------------------------- */
+
+  const heroElements = document.querySelectorAll(
+    "#home .reveal"
+  );
+
+  gsap.fromTo(
+    heroElements,
+    {
+      y: 45,
+      autoAlpha: 0
+    },
+    {
+      y: 0,
+      autoAlpha: 1,
+      duration: 1.4,
+      stagger: 0.15,
+      delay: 0.2,
+      ease: "power4.out",
+      overwrite: "auto"
+    }
+  );
+
+  /* ---------------------------------------------
+     SCROLL REVEAL — TEXT + SECTIONS
+  --------------------------------------------- */
+
+  gsap.utils.toArray(
+    ".reveal:not(#home .reveal)"
+  ).forEach((element) => {
+
+    gsap.fromTo(
+      element,
+      {
+        y: 55,
+        autoAlpha: 0
+      },
+      {
+        y: 0,
+        autoAlpha: 1,
+        duration: 1.15,
+        ease: "power3.out",
+        overwrite: "auto",
+        scrollTrigger: {
+          trigger: element,
+          start: "top 88%",
+          toggleActions: "play none none reverse",
+          once: true
+        }
+      }
+    );
+
+  });
+
+  /* ---------------------------------------------
+     SERVICE CARDS — PREMIUM STAGGER
+  --------------------------------------------- */
+
+  gsap.utils.toArray(
+    ".service-card"
+  ).forEach((card, index) => {
+
+    gsap.fromTo(
+      card,
+      {
+        y: 80,
+        autoAlpha: 0,
+        scale: 0.97
+      },
+      {
+        y: 0,
+        autoAlpha: 1,
+        scale: 1,
+        duration: 1.25,
+        delay: index * 0.08,
+        ease: "power3.out",
+        overwrite: "auto",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 88%",
+          toggleActions: "play none none reverse",
+          once: true
+        }
+      }
+    );
+
+  });
+
+  /* ---------------------------------------------
+     SECTION TITLES — ELEGANT REVEAL
+  --------------------------------------------- */
+
+  gsap.utils.toArray(
+    ".section-title"
+  ).forEach((title) => {
+
+    gsap.fromTo(
+      title,
+      {
+        y: 45,
+        autoAlpha: 0
+      },
+      {
+        y: 0,
+        autoAlpha: 1,
+        duration: 1.3,
+        ease: "power4.out",
+        scrollTrigger: {
+          trigger: title,
+          start: "top 85%",
+          toggleActions: "play none none reverse",
+          once: true
+        }
+      }
+    );
+
+  });
+
+  /* ---------------------------------------------
+     GOLD DIVIDERS — SUBTLE SCALE REVEAL
+  --------------------------------------------- */
+
+  gsap.utils.toArray(
+    ".gold-line"
+  ).forEach((line) => {
+
+    gsap.fromTo(
+      line,
+      {
+        scaleX: 0,
+        transformOrigin: "center center"
+      },
+      {
+        scaleX: 1,
+        duration: 1.5,
+        ease: "power3.inOut",
+        scrollTrigger: {
+          trigger: line,
+          start: "top 90%",
+          toggleActions: "play none none reverse",
+          once: true
+        }
+      }
+    );
+
+  });
+
+  /* ---------------------------------------------
+     REFRESH SCROLLTRIGGER
+  --------------------------------------------- */
+
+  window.addEventListener(
+    "load",
+    () => {
+      ScrollTrigger.refresh();
+    }
+  );
+
+})();
+</script>
+<a href="https://wa.me/9876543210" target="_blank" rel="noopener noreferrer" class="fixed bottom-8 right-8 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl z-50 transition-transform duration-300 hover:scale-110 flex items-center justify-center cursor-pointer">
+  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
+  </svg>
+</a>
+</body>
+</html>
